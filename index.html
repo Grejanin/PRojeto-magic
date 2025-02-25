@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesquisa Avançada Magic: The Gathering</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Cartas Magic: The Gathering</h1>
+    </header>
+
+    <!-- Filtros de pesquisa avançada -->
+    <div id="advanced-filters">
+        <h2>Filtros de Pesquisa</h2>
+
+        <!-- Filtro de texto -->
+        <div class="filter-group">
+            <label for="card-text">Texto da Carta:</label>
+            <input type="text" id="card-text" placeholder="Ex: 'draw'" />
+        </div>
+
+        <!-- Filtro de tipo de carta -->
+        <div class="filter-group">
+            <label for="card-type">Tipo de Carta:</label>
+            <input type="text" id="card-type" placeholder="Ex: Creature, Sorcery" />
+        </div>
+
+        <!-- Filtro de raridade -->
+        <div class="filter-group">
+            <label for="card-rarity">Raridade:</label>
+            <select id="card-rarity">
+                <option value="">Selecione...</option>
+                <option value="common">Comum</option>
+                <option value="uncommon">Incomum</option>
+                <option value="rare">Rara</option>
+                <option value="mythic">Mítica</option>
+            </select>
+        </div>
+
+        <!-- Filtro de cor -->
+        <div class="filter-group">
+            <label>Escolha as cores:</label><br>
+            <input type="checkbox" id="color-black" value="B"><img class="mana-icon" src="images/black.png" alt="Preta (B)">
+            <input type="checkbox" id="color-blue" value="U"><img class="mana-icon" src="images/blue.png" alt="Azul (U)">
+            <input type="checkbox" id="color-green" value="G"><img class="mana-icon" src="images/green.png" alt="Verde (G)">
+            <input type="checkbox" id="color-red" value="R"><img class="mana-icon" src="images/red.png" alt="Vermelha (R)">
+            <input type="checkbox" id="color-white" value="W"><img class="mana-icon" src="images/white.png" alt="Branca (W)">
+        </div>
+
+        <!-- Filtro de Mana Value -->
+        <div class="filter-group">
+            <label for="mana-value">Mana Value:</label>
+            <input type="number" id="mana-value" placeholder="Ex: 2" />
+        </div>
+
+        <!-- Filtro de tipo de coleção -->
+        <div class="filter-group">
+            <label for="card-set">Coleção:</label>
+            <input type="text" id="card-set" placeholder="Ex: Core Set 2020" />
+        </div>
+
+        <!-- Botão de pesquisa -->
+        <button id="search-button">Pesquisar</button>
+    </div>
+
+    <!-- Lista de Cartas -->
+    <div id="card-list"></div>
+
+    <script>
+        // Função para realizar a pesquisa
+        async function fetchCards(query = '', colors = '', rarity = '', cardType = '', manaValue = '', set = '') {
+            try {
+                let url = `https://api.scryfall.com/cards/search?q=`;
+
+                // Adiciona filtros na consulta se eles estiverem preenchidos
+                if (query) {
+                    url += `o%3A${encodeURIComponent(query)}`;  // Para o texto da carta
+                }
+
+                if (cardType) {
+                    url += `+t%3A${encodeURIComponent(cardType)}`;  // Para o tipo de carta
+                }
+
+                if (rarity) {
+                    url += `+rarity%3A${rarity}`;  // Para a raridade
+                }
+
+                // Se houver cores selecionadas, adiciona o parâmetro mana:{cor}
+                if (colors) {
+                    url += `+mana%3A${colors}`;  // Para as cores
+                }
+
+                // Se houver Mana Value selecionado, adiciona o parâmetro mv:{valor}
+                if (manaValue) {
+                    url += `+mv%3A${manaValue}`;  // Para o valor convertido de mana (Mana Value)
+                }
+
+                // Se houver uma coleção, adiciona à URL
+                if (set) {
+                    url += `+set%3A${encodeURIComponent(set)}`;  // Para a coleção
+                }
+
+                console.log('URL de consulta:', url);  // Verifique a URL gerada
+
+                const response = await fetch(url);
+                const data = await response.json();
+
+                // Verifica se a API retornou resultados válidos
+                if (data && Array.isArray(data.data) && data.data.length > 0) {
+                    displayCards(data.data);  // Exibe as cartas
+                } else {
+                    console.error('Erro: Dados retornados não são válidos.', data);
+                    document.getElementById('card-list').innerHTML = '<p>Nenhuma carta encontrada.</p>';
+                }
+            } catch (error) {
+                console.error('Erro ao carregar as cartas:', error);
+            }
+        }
+
+        // Função para exibir as cartas
+        function displayCards(cards) {
+            const cardList = document.getElementById('card-list');
+            cardList.innerHTML = ''; // Limpa a lista antes de exibir novas cartas
+
+            if (cards.length === 0) {
+                cardList.innerHTML = '<p>Nenhuma carta encontrada.</p>';
+                return;
+            }
+
+            cards.forEach(card => {
+                const cardDiv = document.createElement('div');
+                cardDiv.classList.add('card');
+                
+                const cardImage = document.createElement('img');
+                cardImage.src = card.image_uris ? card.image_uris.large : 'default_image.jpg'; // Imagem padrão
+                cardImage.alt = card.name;
+
+                // Exibe o nome da carta e o preço
+                const price = card.prices && card.prices.usd ? card.prices.usd : 'N/A';
+                cardDiv.innerHTML = `
+                    <p>${card.name} - Preço: $${price}</p>
+                `;
+                
+                // Cria um link para o LigaMagic ao clicar na carta
+                const ligaMagicLink = `https://www.ligamagic.com.br/?view=cards%2Fsearch&card=${encodeURIComponent(card.name)}`;
+                cardImage.addEventListener('click', () => {
+                    window.open(ligaMagicLink, '_blank');  // Abre o link do LigaMagic em uma nova aba
+                });
+
+                cardDiv.appendChild(cardImage);
+                cardList.appendChild(cardDiv);
+            });
+        }
+
+        // Função para realizar a pesquisa ao clicar no botão
+        document.getElementById('search-button').addEventListener('click', () => {
+            const query = document.getElementById('card-text').value.trim();  // Texto da carta
+            const selectedColors = Array.from(document.querySelectorAll('#color-black, #color-blue, #color-green, #color-red, #color-white'))
+                .filter(checkbox => checkbox.checked)  // Filtra os checkboxes que estão marcados
+                .map(checkbox => checkbox.value)       // Extrai os valores das cores selecionadas
+                .join('');                             // Junta as cores selecionadas sem separar por '+'
+            const rarity = document.getElementById('card-rarity').value;
+            const cardType = document.getElementById('card-type').value.trim();
+            const manaValue = document.getElementById('mana-value').value.trim();
+            const set = document.getElementById('card-set').value.trim();
+
+            // Se qualquer filtro estiver preenchido, realiza a pesquisa
+            if (query || selectedColors || rarity || cardType || manaValue || set) {
+                fetchCards(query, selectedColors, rarity, cardType, manaValue, set);  // Realiza a consulta com todos os filtros
+            } else {
+                alert('Por favor, insira ao menos um filtro de pesquisa.');
+            }
+        });
+    </script>
+</body>
+</html>
