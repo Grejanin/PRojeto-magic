@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <h1>Cartas Magic: The Gathering</h1>
+        <h1>Pesquisa Avançada Magic: The Gathering</h1>
     </header>
 
     <!-- Filtros de pesquisa avançada -->
@@ -55,6 +55,12 @@
             <input type="number" id="mana-value" placeholder="Ex: 2" />
         </div>
 
+        <!-- Filtro de Mana X -->
+        <div class="filter-group">
+            <label for="mana-x">Mana X (Cartas com custo de mana X):</label>
+            <input type="checkbox" id="mana-x" />
+        </div>
+
         <!-- Filtro de tipo de coleção -->
         <div class="filter-group">
             <label for="card-set">Coleção:</label>
@@ -70,7 +76,7 @@
 
     <script>
         // Função para realizar a pesquisa
-        async function fetchCards(query = '', colors = '', rarity = '', cardType = '', manaValue = '', set = '') {
+        async function fetchCards(query = '', colors = '', rarity = '', cardType = '', manaValue = '', set = '', manaX = false) {
             try {
                 let url = `https://api.scryfall.com/cards/search?q=`;
 
@@ -95,6 +101,11 @@
                 // Se houver Mana Value selecionado, adiciona o parâmetro mv:{valor}
                 if (manaValue) {
                     url += `+mv%3A${manaValue}`;  // Para o valor convertido de mana (Mana Value)
+                }
+
+                // Se Mana X estiver selecionado, adiciona o parâmetro mana:X
+                if (manaX) {
+                    url += `+mana%3AX`;  // Para Mana X
                 }
 
                 // Se houver uma coleção, adiciona à URL
@@ -165,10 +176,11 @@
             const cardType = document.getElementById('card-type').value.trim();
             const manaValue = document.getElementById('mana-value').value.trim();
             const set = document.getElementById('card-set').value.trim();
+            const manaX = document.getElementById('mana-x').checked;  // Verifica se o filtro de Mana X está marcado
 
             // Se qualquer filtro estiver preenchido, realiza a pesquisa
-            if (query || selectedColors || rarity || cardType || manaValue || set) {
-                fetchCards(query, selectedColors, rarity, cardType, manaValue, set);  // Realiza a consulta com todos os filtros
+            if (query || selectedColors || rarity || cardType || manaValue || manaX || set) {
+                fetchCards(query, selectedColors, rarity, cardType, manaValue, set, manaX);  // Realiza a consulta com todos os filtros
             } else {
                 alert('Por favor, insira ao menos um filtro de pesquisa.');
             }
