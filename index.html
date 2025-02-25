@@ -80,9 +80,11 @@
             try {
                 let url = `https://api.scryfall.com/cards/search?q=`;
 
-                // Adiciona filtros na consulta se eles estiverem preenchidos
+                // Codificar o texto da carta corretamente, incluindo aspas
                 if (query) {
-                    url += `o%3A${encodeURIComponent(query)}`;  // Para o texto da carta
+                    query = `"${query}"`;  // Adiciona as aspas ao redor da pesquisa
+                    query = encodeURIComponent(query);  // Codifica a URL
+                    url += `o%3A${query}`;  // Para o texto da carta
                 }
 
                 if (cardType) {
