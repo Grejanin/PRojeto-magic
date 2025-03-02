@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pesquisa Avançada Magic: The Gathering</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <header>
         <h1>Pesquisa Avançada Magic: The Gathering</h1>
@@ -42,11 +44,16 @@
         <!-- Filtro de cor -->
         <div class="filter-group">
             <label>Escolha as cores:</label><br>
-            <input type="checkbox" id="color-black" value="B"><img class="mana-icon" src="images/black.png" alt="Preta (B)">
-            <input type="checkbox" id="color-blue" value="U"><img class="mana-icon" src="images/blue.png" alt="Azul (U)">
-            <input type="checkbox" id="color-green" value="G"><img class="mana-icon" src="images/green.png" alt="Verde (G)">
-            <input type="checkbox" id="color-red" value="R"><img class="mana-icon" src="images/red.png" alt="Vermelha (R)">
-            <input type="checkbox" id="color-white" value="W"><img class="mana-icon" src="images/white.png" alt="Branca (W)">
+            <input type="checkbox" id="color-black" value="B"><img class="mana-icon" src="images/black.png"
+                alt="Preta (B)">
+            <input type="checkbox" id="color-blue" value="U"><img class="mana-icon" src="images/blue.png"
+                alt="Azul (U)">
+            <input type="checkbox" id="color-green" value="G"><img class="mana-icon" src="images/green.png"
+                alt="Verde (G)">
+            <input type="checkbox" id="color-red" value="R"><img class="mana-icon" src="images/red.png"
+                alt="Vermelha (R)">
+            <input type="checkbox" id="color-white" value="W"><img class="mana-icon" src="images/white.png"
+                alt="Branca (W)">
         </div>
 
         <!-- Filtro de Mana Value -->
@@ -69,6 +76,21 @@
 
         <!-- Botão de pesquisa -->
         <button id="search-button">Pesquisar</button>
+
+        <!-- Espaço de Anúncio Google AdSense -->
+        <div class="adsense-container">
+            <script async
+                src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5356400149977413"
+                crossorigin="anonymous"></script>
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5356400149977413" <!-- Substitua pelo
+                seu código de cliente -->
+                data-ad-slot="XXXXXXX" <!-- Substitua pelo seu slot de anúncio -->
+                data-ad-format="auto"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
     </div>
 
     <!-- Lista de Cartas -->
@@ -145,7 +167,7 @@
             cards.forEach(card => {
                 const cardDiv = document.createElement('div');
                 cardDiv.classList.add('card');
-                
+
                 const cardImage = document.createElement('img');
                 cardImage.src = card.image_uris ? card.image_uris.large : 'default_image.jpg'; // Imagem padrão
                 cardImage.alt = card.name;
@@ -155,7 +177,7 @@
                 cardDiv.innerHTML = `
                     <p>${card.name} - Preço: $${price}</p>
                 `;
-                
+
                 // Cria um link para o LigaMagic ao clicar na carta
                 const ligaMagicLink = `https://www.ligamagic.com.br/?view=cards%2Fsearch&card=${encodeURIComponent(card.name)}`;
                 cardImage.addEventListener('click', () => {
@@ -189,4 +211,5 @@
         });
     </script>
 </body>
+
 </html>
