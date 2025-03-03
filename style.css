@@ -17,6 +17,7 @@ body {
     min-height: 100vh;
     padding: 20px;
     margin: 0;
+    padding-bottom: 120px; /* Ajuste para garantir que o conteúdo não seja coberto pelo anúncio */
 }
 
 /* Título */
@@ -178,4 +179,16 @@ h1 {
     margin-right: 10px;
     display: inline-block;
     vertical-align: middle;
+}
+
+/* Estilo para o anúncio fixo na parte inferior */
+.adsense-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Cor de fundo semi-transparente */
+    text-align: center;
+    padding: 10px 0;
+    z-index: 9999; /* Garante que o anúncio fique acima do restante do conteúdo */
 }

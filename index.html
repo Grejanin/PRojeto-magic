@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pesquisa Avançada Magic: The Gathering</title>
     <link rel="stylesheet" href="style.css">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5356400149977413"
-        crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5356400149977413" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -46,16 +45,11 @@
         <!-- Filtro de cor -->
         <div class="filter-group">
             <label>Escolha as cores:</label><br>
-            <input type="checkbox" id="color-black" value="B"><img class="mana-icon" src="images/black.png"
-                alt="Preta (B)">
-            <input type="checkbox" id="color-blue" value="U"><img class="mana-icon" src="images/blue.png"
-                alt="Azul (U)">
-            <input type="checkbox" id="color-green" value="G"><img class="mana-icon" src="images/green.png"
-                alt="Verde (G)">
-            <input type="checkbox" id="color-red" value="R"><img class="mana-icon" src="images/red.png"
-                alt="Vermelha (R)">
-            <input type="checkbox" id="color-white" value="W"><img class="mana-icon" src="images/white.png"
-                alt="Branca (W)">
+            <input type="checkbox" id="color-black" value="B"><img class="mana-icon" src="images/black.png" alt="Preta (B)">
+            <input type="checkbox" id="color-blue" value="U"><img class="mana-icon" src="images/blue.png" alt="Azul (U)">
+            <input type="checkbox" id="color-green" value="G"><img class="mana-icon" src="images/green.png" alt="Verde (G)">
+            <input type="checkbox" id="color-red" value="R"><img class="mana-icon" src="images/red.png" alt="Vermelha (R)">
+            <input type="checkbox" id="color-white" value="W"><img class="mana-icon" src="images/white.png" alt="Branca (W)">
         </div>
 
         <!-- Filtro de Mana Value -->
@@ -78,26 +72,20 @@
 
         <!-- Botão de pesquisa -->
         <button id="search-button">Pesquisar</button>
+    </div>
 
-        <p></P>
-        <p></P>
-
-        <!-- Espaço de Anúncio Google AdSense -->
-        <div class="adsense-container">
-            <script async
-                src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5356400149977413"
-                crossorigin="anonymous"></script>
-                <ins class="adsbygoogle"
-                style="display:block"
-                data-ad-client="ca-pub-5356400149977413"
-                data-ad-slot="1823297684"
-                data-ad-format="auto"
-                data-full-width-responsive="true"></ins>
-           <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-           </script>
-        </div>
-
+    <!-- Espaço de Anúncio Google AdSense -->
+    <div class="adsense-container">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5356400149977413" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-5356400149977413"
+             data-ad-slot="1823297684"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
     </div>
 
     <!-- Lista de Cartas -->
@@ -109,51 +97,42 @@
             try {
                 let url = `https://api.scryfall.com/cards/search?q=`;
 
-                // Codificar o texto da carta corretamente, incluindo aspas
                 if (query) {
-                    query = `"${query}"`;  // Adiciona as aspas ao redor da pesquisa
-                    query = encodeURIComponent(query);  // Codifica a URL
-                    url += `o%3A${query}`;  // Para o texto da carta
+                    query = `"${query}"`;
+                    query = encodeURIComponent(query);
+                    url += `o%3A${query}`;
                 }
 
                 if (cardType) {
-                    url += `+t%3A${encodeURIComponent(cardType)}`;  // Para o tipo de carta
+                    url += `+t%3A${encodeURIComponent(cardType)}`;
                 }
 
                 if (rarity) {
-                    url += `+rarity%3A${rarity}`;  // Para a raridade
+                    url += `+rarity%3A${rarity}`;
                 }
 
-                // Se houver cores selecionadas, adiciona o parâmetro mana:{cor}
                 if (colors) {
-                    url += `+mana%3A${colors}`;  // Para as cores
+                    url += `+mana%3A${colors}`;
                 }
 
-                // Se houver Mana Value selecionado, adiciona o parâmetro mv:{valor}
                 if (manaValue) {
-                    url += `+mv%3A${manaValue}`;  // Para o valor convertido de mana (Mana Value)
+                    url += `+mv%3A${manaValue}`;
                 }
 
-                // Se Mana X estiver selecionado, adiciona o parâmetro mana:X
                 if (manaX) {
-                    url += `+mana%3AX`;  // Para Mana X
+                    url += `+mana%3AX`;
                 }
 
-                // Se houver uma coleção, adiciona à URL
                 if (set) {
-                    url += `+set%3A${encodeURIComponent(set)}`;  // Para a coleção
+                    url += `+set%3A${encodeURIComponent(set)}`;
                 }
-
-                console.log('URL de consulta:', url);  // Verifique a URL gerada
 
                 const response = await fetch(url);
                 const data = await response.json();
 
-                // Verifica se a API retornou resultados válidos
                 if (data && Array.isArray(data.data) && data.data.length > 0) {
-                    displayCards(data.data);  // Exibe as cartas
+                    displayCards(data.data);
                 } else {
-                    console.error('Erro: Dados retornados não são válidos.', data);
                     document.getElementById('card-list').innerHTML = '<p>Nenhuma carta encontrada.</p>';
                 }
             } catch (error) {
@@ -161,10 +140,9 @@
             }
         }
 
-        // Função para exibir as cartas
         function displayCards(cards) {
             const cardList = document.getElementById('card-list');
-            cardList.innerHTML = ''; // Limpa a lista antes de exibir novas cartas
+            cardList.innerHTML = '';
 
             if (cards.length === 0) {
                 cardList.innerHTML = '<p>Nenhuma carta encontrada.</p>';
@@ -176,19 +154,15 @@
                 cardDiv.classList.add('card');
 
                 const cardImage = document.createElement('img');
-                cardImage.src = card.image_uris ? card.image_uris.large : 'default_image.jpg'; // Imagem padrão
+                cardImage.src = card.image_uris ? card.image_uris.large : 'default_image.jpg';
                 cardImage.alt = card.name;
 
-                // Exibe o nome da carta e o preço
                 const price = card.prices && card.prices.usd ? card.prices.usd : 'N/A';
-                cardDiv.innerHTML = `
-                    <p>${card.name} - Preço: $${price}</p>
-                `;
+                cardDiv.innerHTML = `<p>${card.name} - Preço: $${price}</p>`;
 
-                // Cria um link para o LigaMagic ao clicar na carta
                 const ligaMagicLink = `https://www.ligamagic.com.br/?view=cards%2Fsearch&card=${encodeURIComponent(card.name)}`;
                 cardImage.addEventListener('click', () => {
-                    window.open(ligaMagicLink, '_blank');  // Abre o link do LigaMagic em uma nova aba
+                    window.open(ligaMagicLink, '_blank');
                 });
 
                 cardDiv.appendChild(cardImage);
@@ -196,22 +170,20 @@
             });
         }
 
-        // Função para realizar a pesquisa ao clicar no botão
         document.getElementById('search-button').addEventListener('click', () => {
-            const query = document.getElementById('card-text').value.trim();  // Texto da carta
+            const query = document.getElementById('card-text').value.trim();
             const selectedColors = Array.from(document.querySelectorAll('#color-black, #color-blue, #color-green, #color-red, #color-white'))
-                .filter(checkbox => checkbox.checked)  // Filtra os checkboxes que estão marcados
-                .map(checkbox => checkbox.value)       // Extrai os valores das cores selecionadas
-                .join('');                             // Junta as cores selecionadas sem separar por '+'
+                .filter(checkbox => checkbox.checked)
+                .map(checkbox => checkbox.value)
+                .join('');
             const rarity = document.getElementById('card-rarity').value;
             const cardType = document.getElementById('card-type').value.trim();
             const manaValue = document.getElementById('mana-value').value.trim();
             const set = document.getElementById('card-set').value.trim();
-            const manaX = document.getElementById('mana-x').checked;  // Verifica se o filtro de Mana X está marcado
+            const manaX = document.getElementById('mana-x').checked;
 
-            // Se qualquer filtro estiver preenchido, realiza a pesquisa
             if (query || selectedColors || rarity || cardType || manaValue || manaX || set) {
-                fetchCards(query, selectedColors, rarity, cardType, manaValue, set, manaX);  // Realiza a consulta com todos os filtros
+                fetchCards(query, selectedColors, rarity, cardType, manaValue, set, manaX);
             } else {
                 alert('Por favor, insira ao menos um filtro de pesquisa.');
             }
