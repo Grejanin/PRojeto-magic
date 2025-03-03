@@ -17,7 +17,8 @@ body {
     min-height: 100vh;
     padding: 20px;
     margin: 0;
-    padding-bottom: 120px; /* Ajuste para garantir que o conteúdo não seja coberto pelo anúncio */
+    padding-bottom: 120px;
+    /* Ajuste para garantir que o conteúdo não seja coberto pelo anúncio */
 }
 
 /* Título */
@@ -111,7 +112,8 @@ h1 {
     align-items: center;
 }
 
-#advanced-filters input[type="text"], #advanced-filters select {
+#advanced-filters input[type="text"],
+#advanced-filters select {
     padding: 8px;
     font-size: 1rem;
     border: 2px solid #f9a825;
@@ -187,8 +189,13 @@ h1 {
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Cor de fundo semi-transparente */
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Cor de fundo semi-transparente */
     text-align: center;
-    padding: 10px 0;
-    z-index: 9999; /* Garante que o anúncio fique acima do restante do conteúdo */
+    padding: 5px 0;
+    /* Menor padding para uma faixa mais fina */
+    height: 60px;
+    /* Define uma altura fixa para o anúncio */
+    z-index: 9999;
+    /* Garante que o anúncio fique acima do restante do conteúdo */
 }
