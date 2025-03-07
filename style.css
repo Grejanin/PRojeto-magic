@@ -182,20 +182,3 @@ h1 {
     display: inline-block;
     vertical-align: middle;
 }
-
-/* Estilo para o anúncio fixo na parte inferior */
-.adsense-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    /* Cor de fundo semi-transparente */
-    text-align: center;
-    padding: 5px 0;
-    /* Menor padding para uma faixa mais fina */
-    height: 60px;
-    /* Define uma altura fixa para o anúncio */
-    z-index: 9999;
-    /* Garante que o anúncio fique acima do restante do conteúdo */
-} 
